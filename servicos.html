@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serviços — Solar City Brasil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFF8E7; --bg-soft:#FFF1D1; --ink:#14212B; --ink-soft:#4C5C68;
+    --gold:#FFB627; --gold-deep:#F2921A; --azure:#1E88E5; --azure-deep:#0F5FA8;
+    --green:#22A66B; --navy:#0B1626; --navy-soft:#132A42; --card:#FFFFFF;
+    --line:rgba(20,33,43,0.10); --radius:20px; --shadow:0 20px 45px -20px rgba(11,22,38,0.35);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.disp{font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:-0.02em; margin:0;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit; text-decoration:none;} img{max-width:100%; display:block;}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 28px;}
+  section{position:relative;} ::selection{background:var(--gold); color:var(--navy);}
+  :focus-visible{outline:3px solid var(--azure); outline-offset:3px; border-radius:6px;}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}}
+
+  header{position:sticky; top:0; z-index:50; background:rgba(255,248,231,0.86); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 28px; max-width:1160px; margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Space Grotesk'; font-weight:700; font-size:1.05rem;}
+  .brand .sun-mark{width:30px; height:30px;}
+  .nav-links{display:flex; gap:30px; font-size:0.94rem; font-weight:500; color:var(--ink-soft);}
+  .nav-links a{position:relative; padding:6px 0;}
+  .nav-links a::after{content:""; position:absolute; left:0; bottom:0; width:0; height:2px; background:var(--gold-deep); transition:width .25s ease;}
+  .nav-links a:hover{color:var(--ink);} .nav-links a:hover::after{width:100%;}
+  .nav-links a.current{color:var(--ink);} .nav-links a.current::after{width:100%;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:999px; font-weight:600; font-size:0.92rem; border:none; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease;}
+  .btn-primary{background:var(--green); color:#fff; box-shadow:0 10px 24px -8px rgba(34,166,107,0.55);}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 14px 28px -8px rgba(34,166,107,0.65);}
+
+  .page-hero{padding:64px 0 20px;}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono'; font-size:0.78rem; font-weight:500; color:var(--azure-deep); background:rgba(30,136,229,0.10); padding:7px 14px; border-radius:999px; margin-bottom:22px;}
+  h1.headline{font-size:clamp(2.1rem, 4.4vw, 3.2rem); line-height:1.06; max-width:20ch;}
+  .page-sub{margin-top:18px; font-size:1.08rem; line-height:1.6; color:var(--ink-soft); max-width:60ch;}
+
+  section.pad{padding:64px 0;}
+  .bg-alt{background:var(--bg-soft);}
+  .sec-head{max-width:640px; margin-bottom:40px;}
+  .sec-head h2{font-size:clamp(1.5rem,3vw,2.1rem); line-height:1.15;}
+  .sec-head p{margin-top:12px; color:var(--ink-soft); font-size:1rem; line-height:1.6;}
+
+  .steps{display:flex; flex-direction:column; gap:0;}
+  .step{display:grid; grid-template-columns:64px 1fr; gap:24px; padding:26px 0; position:relative;}
+  .step:not(:last-child){border-bottom:1px solid var(--line);}
+  .step .num{width:44px; height:44px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono'; font-weight:700; font-size:0.95rem;}
+  .step h3{font-size:1.12rem; margin-bottom:6px;}
+  .step p{color:var(--ink-soft); font-size:0.96rem; line-height:1.6; max-width:60ch;}
+  @media (max-width:600px){.step{grid-template-columns:44px 1fr; gap:16px;}}
+
+  .svc-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .svc-card{background:var(--card); border-radius:18px; padding:30px 26px; border:1px solid var(--line); transition:transform .25s ease, box-shadow .25s ease;}
+  .svc-card:hover{transform:translateY(-6px); box-shadow:0 18px 34px -18px rgba(20,33,43,0.3);}
+  .svc-card .ic-wrap{width:56px; height:56px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:18px;}
+  .svc-card .ic{width:30px; height:30px;}
+  .svc-card h3{font-size:1.05rem; margin-bottom:10px;}
+  .svc-card p{font-size:0.92rem; color:var(--ink-soft); line-height:1.6;}
+  @media (max-width:900px){.svc-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:600px){.svc-grid{grid-template-columns:1fr;}}
+
+  .cta-band{background:linear-gradient(120deg, var(--navy) 0%, var(--navy-soft) 60%, #123A5E 100%); border-radius:28px; padding:56px 48px; color:#fff; position:relative; overflow:hidden; text-align:center;}
+  .cta-band::before{content:""; position:absolute; width:520px; height:520px; border-radius:50%; background:radial-gradient(circle, rgba(255,182,39,0.35), transparent 70%); top:-260px; right:-160px;}
+  .cta-band h2{font-size:clamp(1.5rem,3.2vw,2.1rem); position:relative; max-width:640px; margin:0 auto;}
+  .cta-band p{color:rgba(255,255,255,0.72); margin-top:14px; font-size:1rem; position:relative;}
+  .cta-band .hero-actions{justify-content:center; position:relative; margin-top:26px; display:flex;}
+
+  footer{background:var(--navy); color:rgba(255,255,255,0.85); padding:56px 0 28px; margin-top:60px;}
+  .foot-grid{display:flex; justify-content:space-between; flex-wrap:wrap; gap:30px; padding-bottom:30px; border-bottom:1px solid rgba(255,255,255,0.12);}
+  .foot-brand{font-family:'Space Grotesk'; font-weight:700; font-size:1.1rem; color:#fff;}
+  .foot-links{display:flex; gap:34px; font-size:0.9rem;}
+  .foot-links a{opacity:.75; transition:opacity .2s;} .foot-links a:hover{opacity:1;}
+  .foot-bottom{display:flex; justify-content:space-between; padding-top:22px; font-size:0.8rem; opacity:.55; flex-wrap:wrap; gap:10px;}
+
+  .fab{position:fixed; bottom:24px; right:24px; z-index:60; width:58px; height:58px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; box-shadow:0 14px 30px -8px rgba(34,166,107,0.6); animation:float 3s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);}}
+  .fab svg{width:28px; height:28px; fill:#fff;}
+
+  .reveal{opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (max-width:900px){.nav-links{display:none;}}
+  /* ---------- MENU MOBILE ---------- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.hamburger:hover {
+  background: rgba(20, 33, 43, 0.06);
+}
+
+.hamburger span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  background: var(--ink);
+  border-radius: 3px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animação do hambúrguer para X */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--card);
+  padding: 16px 28px 24px;
+  border-top: 1px solid var(--line);
+  gap: 6px;
+}
+
+.mobile-menu.open {
+  display: flex;
+}
+
+.mobile-menu a {
+  padding: 12px 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line);
+  transition: color 0.2s ease;
+}
+
+.mobile-menu a:last-child {
+  border-bottom: none;
+}
+
+.mobile-menu a:hover {
+  color: var(--ink);
+}
+
+.nav-mobile {
+  display: none;
+  align-items: center;
+}
+
+/* Responsivo: esconde menu desktop e mostra hambúrguer */
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+  .nav-mobile {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .nav-cta .btn {
+    font-size: 0.78rem;
+    padding: 8px 14px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="solar-city-brasil.html">
+      <svg class="sun-mark" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="8" fill="#FFB627"/>
+        <g stroke="#F2921A" stroke-width="2.4" stroke-linecap="round">
+          <line x1="20" y1="2" x2="20" y2="8"/>
+          <line x1="20" y1="32" x2="20" y2="38"/>
+          <line x1="2" y1="20" x2="8" y2="20"/>
+          <line x1="32" y1="20" x2="38" y2="20"/>
+          <line x1="7" y1="7" x2="11.5" y2="11.5"/>
+          <line x1="28.5" y1="28.5" x2="33" y2="33"/>
+          <line x1="33" y1="7" x2="28.5" y2="11.5"/>
+          <line x1="11.5" y1="28.5" x2="7" y2="33"/>
+        </g>
+      </svg>
+      Solar City Brasil
+    </a>
+    <nav class="nav-links">
+      <a href="servicos.html">serviços</a>
+      <a href="equipamentos_materiais.html">equipamentos e materiais</a>
+      <a href="perguntas_frequentes.html">perguntas frequentes</a>
+      <a href="contato.html">contato</a>
+    </nav>
+    <div class="nav-mobile">
+      <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="https://api.whatsapp.com/send?phone=5511998468362&text=Olá,%20gostaria%20de%20mais%20informações%20sobre%20seus%20serviços" target="_blank" rel="noopener">
+        Solicitar orçamento
+      </a>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="servicos.html">serviços</a>
+    <a href="equipamentos_materiais.html">equipamentos e materiais</a>
+    <a href="perguntas_frequentes.html">perguntas frequentes</a>
+    <a href="contato.html">contato</a>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow"><span class="dot"></span> DO ORÇAMENTO AO PÓS-VENDA</div>
+      <h1 class="headline">Serviços completos, do sol à sua conta de luz</h1>
+      <p class="page-sub">Cuidamos de todas as etapas do seu sistema de energia solar com equipe de engenharia própria — sem intermediários e sem surpresas.</p>
+    </div>
+  </section>
+
+  <section class="pad">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">COMO TRABALHAMOS</div>
+        <h2>O passo a passo do seu projeto</h2>
+        <p>Cada etapa é conduzida pela nossa própria equipe, garantindo controle de qualidade do início ao fim.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step reveal">
+          <div class="num mono">01</div>
+          <div><h3>Visita técnica e orçamento</h3><p>Avaliamos seu consumo de energia, o espaço disponível e as condições do local para montar uma proposta sob medida.</p></div>
+        </div>
+        <div class="step reveal">
+          <div class="num mono">02</div>
+          <div><h3>Projeto e dimensionamento</h3><p>Nossa engenharia define o sistema ideal — on-grid, off-grid ou híbrido — e a quantidade certa de equipamentos para o seu perfil de consumo.</p></div>
+        </div>
+        <div class="step reveal">
+          <div class="num mono">03</div>
+          <div><h3>Instalação</h3><p>Equipe própria especializada realiza a instalação com segurança, seguindo as normas técnicas vigentes.</p></div>
+        </div>
+        <div class="step reveal">
+          <div class="num mono">04</div>
+          <div><h3>Homologação junto à concessionária</h3><p>Cuidamos de toda a documentação e do processo de conexão à rede elétrica da sua distribuidora.</p></div>
+        </div>
+        <div class="step reveal">
+          <div class="num mono">05</div>
+          <div><h3>Monitoramento e manutenção</h3><p>Acompanhamos o desempenho do seu sistema e oferecemos manutenção preventiva para manter a geração sempre no ponto ideal.</p></div>
+        </div>
+        <div class="step reveal">
+          <div class="num mono">06</div>
+          <div><h3>Suporte pós-venda</h3><p>Estamos disponíveis após a instalação para tirar dúvidas, ajustes e o que mais for preciso.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pad bg-alt">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">NOSSOS SERVIÇOS</div>
+        <h2>O que oferecemos</h2>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-card reveal">
+          <div class="ic-wrap" style="background:rgba(30,136,229,0.12);">
+            <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#1E88E5" stroke-width="2"><rect x="8" y="8" width="32" height="32" rx="3"/><path d="M16 24h16M24 16v16"/></svg>
+          </div>
+          <h3>Projeto e dimensionamento</h3>
+          <p>Estudo técnico do seu consumo e do espaço disponível para dimensionar o sistema com precisão.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="ic-wrap" style="background:rgba(255,182,39,0.16);">
+            <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#F2921A" stroke-width="2"><path d="M24 6 42 20v22H6V20L24 6Z"/><path d="M18 42V26h12v16"/></svg>
+          </div>
+          <h3>Instalação residencial, comercial, industrial e rural</h3>
+          <p>Atendemos todos os perfis de consumo, com equipe própria especializada em cada tipo de estrutura.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="ic-wrap" style="background:rgba(34,166,107,0.14);">
+            <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#22A66B" stroke-width="2"><path d="M8 30 18 20l6 6 16-16"/><path d="M32 10h8v8"/></svg>
+          </div>
+          <h3>Homologação e conexão à rede</h3>
+          <p>Tratamos de toda a burocracia junto à concessionária para colocar seu sistema em funcionamento.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="ic-wrap" style="background:rgba(20,33,43,0.08);">
+            <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#14212B" stroke-width="2"><circle cx="24" cy="24" r="15"/><path d="M24 15v9l6 4"/></svg>
+          </div>
+          <h3>Monitoramento de desempenho</h3>
+          <p>Acompanhamento remoto da geração de energia, com alertas em caso de qualquer variação.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="ic-wrap" style="background:rgba(242,146,26,0.14);">
+            <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#F2921A" stroke-width="2"><path d="M24 6a18 18 0 1 0 18 18"/><path d="M24 6v10M24 6l6 4"/></svg>
+          </div>
+          <h3>Manutenção preventiva</h3>
+          <p>Limpeza, inspeção e revisão periódica para manter o sistema sempre com desempenho máximo.</p>
+        </div>
+        <div class="svc-card reveal">
+          <div class="ic-wrap" style="background:rgba(30,136,229,0.12);">
+            <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#1E88E5" stroke-width="2"><path d="M8 40c8-16 12-22 16-22s8 6 16 22"/><circle cx="24" cy="14" r="4"/></svg>
+          </div>
+          <h3>Suporte pós-venda</h3>
+          <p>Canal direto com a nossa equipe para dúvidas, ajustes e assistência sempre que precisar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pad">
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <h2>Pronto para começar seu projeto?</h2>
+        <p>Fale com a nossa equipe e receba uma proposta personalizada para o seu telhado.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://api.whatsapp.com/send?phone=5511998468362&text=Olá,%20gostaria%20de%20solicitar%20um%20orçamento" target="_blank" rel="noopener">Solicitar orçamento no WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">Solar City Brasil</div>
+        <p style="opacity:.6; font-size:0.88rem; max-width:32ch; margin-top:10px;">Energia solar residencial, comercial, industrial e rural.</p>
+      </div>
+      <div class="foot-links">
+        <a href="https://api.whatsapp.com/send?phone=5511998468362&text=Olá,%20como%20podemos%20ajudá-lo%20?" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="mailto:solarcitybrasil@gmail.com">solarcitybrasil@gmail.com</a>
+        <a href="https://www.instagram.com/solarcitybr/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2024–2026 Solar City Brasil — todos os direitos reservados</span>
+      <span>Feito com foco em energia limpa ☀</span>
+    </div>
+  </div>
+</footer>
+
+<a class="fab" href="https://api.whatsapp.com/send?phone=5511998468362&text=Olá,%20como%20podemos%20ajudá-lo%20?" target="_blank" rel="noopener" aria-label="Fale conosco no WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.36 2 11.7c0 1.9.56 3.68 1.53 5.19L2 22l5.3-1.38a10.4 10.4 0 0 0 4.7 1.13c5.52 0 10-4.36 10-9.7C22 6.36 17.52 2 12 2Zm5.85 13.8c-.25.68-1.45 1.3-2 1.38-.5.08-1.14.11-1.84-.12-.42-.14-.96-.32-1.66-.62-2.92-1.24-4.83-4.13-4.98-4.32-.15-.2-1.19-1.55-1.19-2.96 0-1.4.75-2.09 1.02-2.38.27-.28.6-.35.8-.35.2 0 .4 0 .58.01.18.01.44-.07.68.51.25.6.85 2.06.92 2.21.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.14-.3.3-.13.6.17.3.77 1.24 1.65 2 1.14.99 2.1 1.3 2.4 1.44.3.15.48.13.65-.08.18-.2.75-.85.95-1.14.2-.3.4-.24.66-.14.27.1 1.72.79 2.02.94.3.15.5.22.57.34.08.13.08.71-.17 1.39Z"/></svg>
+</a>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); }, {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  // Menu hambúrguer
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+if (hamburger && mobileMenu) {
+  hamburger.addEventListener('click', function() {
+    this.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+  });
+
+  // Fecha o menu ao clicar em um link
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('open');
+    });
+  });
+}
+</script>
+</body>
+</html>
